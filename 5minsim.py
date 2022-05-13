@@ -85,8 +85,10 @@ df_wt['IS_TRADE'] = df_wt.apply(is_trade, axis=1)
 df_wt['IS_TRADE_prev'] = df_wt.IS_TRADE.shift(1).fillna(0).astype(int)
 df_wt['IS_TRADE'] = df_wt.apply(is_trade, axis=1)
 #df_wt.dropna(inplace=True)
-df_trades_extract = df_wt[df_wt.IS_TRADE != 0].copy()
-df_trades = df_trades_extract[['time', 'mid_o', 'mid_h', 'mid_l', 'mid_c', 'wt1', 'wt2', 'high', 'low', 'wt2_prev', 'DIFF', 'IS_TRADE', 'IS_TRADE_prev']].copy()
+
+# df_trades_extract = df_wt[df_wt.IS_TRADE != 0].copy()
+# df_trades = df_trades_extract[['time', 'mid_o', 'mid_h', 'mid_l', 'mid_c', 'wt1', 'wt2', 'high', 'low', 'wt2_prev', 'DIFF', 'IS_TRADE', 'IS_TRADE_prev']].copy()
+
 #df_trades = df_wt[['time', 'mid_o', 'mid_h', 'mid_l', 'mid_c', 'wt1', 'wt2', 'high', 'low', 'wt2_prev', 'DIFF', 'IS_TRADE', 'IS_TRADE_prev']].copy()
 #above line creates df with non trades as well
 print(df_wt.head(45))
@@ -280,7 +282,7 @@ for index, row in df_wt.iterrows():
         open_trades = [x for x in open_trades if x.running == True]
         open_trades.append(Trade(row))
 '''
-@jit
+# @jit
 def backtesting(row):
     global open_trades
     global closed_trades
@@ -314,6 +316,8 @@ conv = df_wt.to_numpy(na_value = -987654321)
 print(conv)
 
 print(type(conv))
+
+np.save("wt.npy", conv)
 
 print ("333333333333333333333333333333333333333333333")
 df_wt.apply(backtesting, axis=1)
