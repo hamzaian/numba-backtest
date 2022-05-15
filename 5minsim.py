@@ -8,6 +8,8 @@ import pandas_datareader as web
 import pprint
 from numba import jit,njit,vectorize
 
+import datetime
+
 pair = "EUR_USD"
 granularity = "H4"
 print("****PAIR:"), print(pair)
@@ -18,7 +20,8 @@ mod_cols = [x for x in df.columns if x not in non_cols]
 df[mod_cols] = df[mod_cols].apply(pd.to_numeric)
 
 df_wt = df[['time', 'volume', 'mid_o', 'mid_h', 'mid_l', 'mid_c', 'ask_h', 'ask_l','ask_c', 'bid_h', 'bid_l', 'bid_c']].copy()
-
+# df_wt['time'] = datetime.datetime(df_wt['time']).strftime("%s")
+# xprint(df_wt.dtypes)
 print(df_wt.tail())
 #-------------
 df_wt['ap'] = (df_wt['mid_h'] + df_wt['mid_l'] + df_wt['mid_c'])/3
@@ -312,6 +315,7 @@ def backtesting(row):
         open_trades.append(Trade(row))
     '''
 #----------------------------------------------------------------
+print(df_wt)
 conv = df_wt.to_numpy(na_value = -987654321)
 print(conv)
 
