@@ -28,6 +28,12 @@ print(data_load.shape[0]) # = 913 rows
 
 global is_running
 is_running = 0
+
+#use these variables to store opened time and closed time for a trade
+#then in closing candle store them in their respective columns along with P/L
+#in the end, extract columns with non-null P/L values
+global opened
+global stopped
 #make range start at 1 instead of 0 if you need previous row for some operation
 
 #using candle index as proxy for duration at the moment
@@ -35,7 +41,10 @@ for i in range((data_load.shape[0] + 1)):
     is_trade = data_load[i][25]
     if (is_trade != 0 ):
         is_running = is_trade
-    if()
+    if(is_running == 1):
+        if()
+    elif(is_running == -1):
+
         #print(is_running)
     # if (is_trade == (-is_running)):
     #     is_running = False
