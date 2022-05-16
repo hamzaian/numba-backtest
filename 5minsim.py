@@ -11,7 +11,7 @@ from numba import jit,njit,vectorize
 import datetime
 
 pair = "EUR_USD"
-granularity = "H4"
+granularity = "M15"
 print("****PAIR:"), print(pair)
 df = pd.read_pickle(utils.get_his_data_filename(pair, granularity))
 
