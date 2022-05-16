@@ -23,11 +23,37 @@ while True:
     else:
         break
 
-print(data_load[-1])
-column_names = ['index', 'timestamp', 'volume', 'mid_o',    'mid_h',    'mid_l', 'mid_c', 'ask_h', 'ask_l', 'ask_c', 'bid_h', 'bid_l', 'bid_c', 
-'ap', 'esa', 'd', 'ci', 'tci', 'wt1', 'wt2', 'EMA_9', 'high'  'low', 'wt2_prev', 'DIFF',  'IS_TRADE_prev', 'IS_TRADE ', ' ENTRY', 'STOPLOSS', 'TAKEPROFIT'];
+# data_load.shape = (913,30)
+print(data_load.shape[0]) # = 913 rows
+
+global is_running
+is_running = 0
+#make range start at 1 instead of 0 if you need previous row for some operation
+
+#using candle index as proxy for duration at the moment
+for i in range((data_load.shape[0] + 1)): 
+    is_trade = data_load[i][25]
+    if (is_trade != 0 ):
+        is_running = is_trade
+    if()
+        #print(is_running)
+    # if (is_trade == (-is_running)):
+    #     is_running = False
+
+    pass
+
+# for i in range(455,463):
+#     print(data_load[i])
+# print(data_load[461])
+column_names = ['0. index', '1. timestamp', '2. volume', 
+'3. mid_o',    '4. mid_h',    '5. mid_l', '6. mid_c', '7. ask_h', '8. ask_l', '9. ask_c', '10. bid_h', '11. bid_l', '12. bid_c', 
+'13. ap', '14. esa', '15. d', '16. ci', '17. tci', '18. wt1', '19. wt2', '20. EMA_9', '21. high'  '22. low', 
+'23. wt2_prev', '24. DIFF',  '25. IS_TRADE_prev', '26. IS_TRADE ', '27. ENTRY', '28. STOPLOSS', '29. TAKEPROFIT'];
+
+extra_columns = ['0. index', '1. timestamp', '2. volume', '3. mid_o',    '4. mid_h',    '5. mid_l', '6. mid_c', '7. ask_h']
 # [23-30]
 #row[n] to denote a cell when applying row-wise function 
+
 
 '''
 def my_func(a):
