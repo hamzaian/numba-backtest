@@ -31,16 +31,26 @@ print(data_load.shape) # [0] = 913 rows
 data_load.resize(data_load.shape[0], (data_load.shape[1]+7))
 print(data_load.shape) 
 
-data_load[:,30] = 0
-data_load[:,31] = 0
-data_load[:,34] = 0
-data_load[:,35] = 0
+# data_load[:,30] = 0
+# data_load[:,31] = 0
+# data_load[:,34] = 0
+# data_load[:,35] = 0
 
-data_load[:,32] = -1
-data_load[:,33] = -1
+# data_load[:,32] = -1
+# data_load[:,33] = -1
 
-data_load[:,36] = -1
+# data_load[:,36] = -1
 
+
+data_load[:,30] = 0.0
+data_load[:,31] = 0.0
+data_load[:,34] = 0.0
+data_load[:,35] = 0.0
+
+data_load[:,32] = -1.0
+data_load[:,33] = -1.0
+
+data_load[:,36] = -1.0
 
 
 for i in range(455,463):
@@ -59,25 +69,25 @@ extra_columns = ['30. long P/L %', '31. short P/L %', '32. opened (index)', '33.
 
 
 
-global is_running
-is_running = 0
+# global is_running
+# is_running = 0
 
-#use these variables to store opened time and closed time for a trade
-#then in closing candle store them in their respective columns along with P/L
-#in the end, extract columns with non-null P/L values
-global opened
-global stopped
-stopped = -1
+# #use these variables to store opened time and closed time for a trade
+# #then in closing candle store them in their respective columns along with P/L
+# #in the end, extract columns with non-null P/L values
+# global opened
+# global stopped
+# stopped = -1
 
-global entry
-global tp
-global sl
-tp = -1
-sl = -1 
-entry = -1
+# global entry
+# global tp
+# global sl
+# tp = -1
+# sl = -1 
+# entry = -1
 
-global trade_num
-trade_num = 0
+# global trade_num
+# trade_num = 0
 
 #make range start at 1 instead of 0 if you need previous row for some operation
 
@@ -87,16 +97,23 @@ trade_num = 0
 x = np.array([1, 2, 3, 4, 5])
 f = lambda x: x ** 2
 squares = f(x)'''
-
+size = data_load.shape[0]   
 # data_load
-@jit
+@njit
 def backtesting():
-    for i in range((data_load.shape[0])): 
+    is_running = 0.0
+    stopped = -1.0
+    tp = -1.0
+    sl = -1.0
+    entry = -1.0
+    trade_num = 0.0
+
+    for i in range(size): 
         is_trade = data_load[i][25]
         long = ( (data_load[i][10]/entry)-1 )*100
         short = ( (data_load[i][8]/entry)-1 )*100
         #row.ask_l-self.entry)/self.entry)*100  <= -0.25
-        if (is_trade != 0 ):
+        if (is_trade != 0.0):
             # if(stopped == -1):
             #     stopped = data_load[i][0]
             #     if(is_running == 1):
@@ -111,24 +128,24 @@ def backtesting():
 
             opened = data_load[i][0]
 
-            trade_num += 1
+            trade_num += 1.0
 
-        if(is_running == 1):
-            if(long >= .25 or data_load[i][10] <= sl or data_load[i][10] >= tp):
-                is_running = 0
+        if(is_running == 1.0):
+            if(long >= .25 or (data_load[i][10] <= sl) or (data_load[i][10] >= tp)):
+                is_running = 0.0
                 stopped = data_load[i][0]
                 data_load[i][35] = stopped - opened
                 data_load[i][27] = entry 
                 data_load[i][36] = data_load[i][10]
                 data_load[i][34] = ((data_load[i][data_load][36]/entry) - 1)*100
 
-                opened = -1
-                stopped = -1
+                opened = -1.0
+                stopped = -1.0
             
 
-        elif(is_running == -1):
-            if(short <= -.25 or data_load[i][8] >= sl or data_load[i][8] <= tp):
-                is_running = 0
+        elif(is_running == -1.0):
+            if(short <= -.25 or (data_load[i][8] >= sl) or (data_load[i][8] <= tp)):
+                is_running = 0.0
                 stopped = data_load[i][0]
                 data_load[i][32] = opened
                 data_load[i][33] = stopped
@@ -139,11 +156,12 @@ def backtesting():
                 data_load[i][34] = (1 - (data_load[i][data_load][36]/entry))*100
 
 
-                opened = -1
-                stopped = -1
+                opened = -1.0
+                stopped = -1.0
             #print(is_running)
         # if (is_trade == (-is_running)):
         #     is_running = False
+backtesting()
 
 # leverage = 20
 # #sum column 34 and divide by trade_num and multiply by leverage

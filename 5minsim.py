@@ -68,13 +68,13 @@ df_wt['low'] = df_wt.mid_l.rolling(window=15).min()
 
 def is_trade(row):
     if row.wt2 > 0 and row.wt2_prev < 0 and row.mid_h >= row.high and (row.mid_c-row.mid_o)>0 and (((row.mid_h-row.mid_c)/row.mid_c)*1.3) < (((row.mid_o-row.mid_l)/row.mid_o)*1.0) and row.IS_TRADE_prev == 0:
-        return 1
+        return 1.0
     elif row.wt2 < 0 and row.wt2_prev > 0 and row.mid_l <= row.low and (row.mid_c-row.mid_o)<0 and (((row.mid_h-row.mid_c)/row.mid_c)*1.0) > (((row.mid_o-row.mid_l)/row.mid_o)*1.3) and row.IS_TRADE_prev == 0:
-        return -1
+        return -1.0
     elif row.wt2 > 13.1217 and row.wt2_prev < 13.1217 and row.mid_h >= row.high and (row.mid_c-row.mid_o)>0 and (((row.mid_h-row.mid_c)/row.mid_c)*1.3) < (((row.mid_o-row.mid_l)/row.mid_o)*1.0) and row.IS_TRADE_prev == 0:
-        return 1
+        return 1.0
     elif row.wt2 < 13.1217 and row.wt2_prev > 13.1217 and row.mid_l <= row.low and (row.mid_c-row.mid_o)<0 and (((row.mid_h-row.mid_c)/row.mid_c)*1.0) > (((row.mid_o-row.mid_l)/row.mid_o)*1.3) and row.IS_TRADE_prev == 0:
-        return -1
+        return -1.0
     #return 0
 
 def open_trade(row):
@@ -99,9 +99,9 @@ print(df_wt.tail(45))
 
 
 def get_stop_loss(row):
-    if row.IS_TRADE == 1:
+    if row.IS_TRADE == 1.0:
         return (row.ask_c * 0.9995)
-    elif row.IS_TRADE == -1:
+    elif row.IS_TRADE == -1.0:
         return (row.bid_c * 1.0005)
     else:
         #return None
@@ -109,32 +109,32 @@ def get_stop_loss(row):
 
 
 def get_take_profit(row):
-    if row.IS_TRADE == 1:
+    if row.IS_TRADE == 1.0:
         return (row.ask_c * 1.0005)
-    elif row.IS_TRADE == -1:
+    elif row.IS_TRADE == -1.0:
         return (row.bid_c * 0.9995)
     else:
         #return None
         return None
 
 def get_entry_stop(row):
-    if row.IS_TRADE == 1:
+    if row.IS_TRADE == 1.0:
         return row.ask_c
-    elif row.IS_TRADE == -1:
+    elif row.IS_TRADE == -1.0:
         return row.bid_c
     else:
         return None
 
 def take_profit(direction, price):
-    if direction == 1:
+    if direction == 1.0:
         return (price * 1.0005)
-    elif direction == -1:
+    elif direction == -1.0:
         return (price * 0.9995)
     
 def stop_loss(direction, price):
-    if direction == 1:
+    if direction == 1.0:
         return (price * 0.9995)
-    elif direction == -1:
+    elif direction == -1.0:
         return (price * 1.0005)
 
 
@@ -177,7 +177,7 @@ class Trade():
     def update_result(self, row):
         #if self.entry!=0:
 
-        if self.direction == 1:
+        if self.direction == 1.0:
             
             #(row.bid_h-self.entry)!=0 and 
             '''if (((self.entry-row.bid_l)/self.entry)*100) > 0.05 :
@@ -204,7 +204,7 @@ class Trade():
                 #self.breakeven = False
                 self.breakeven = True
 
-        elif self.direction == -1:
+        elif self.direction == -1.0:
             #(row.ask_l-self.entry)!=0 and 
             #if row.ask_h >= self.SL:
                 #self.result = ( (self.entry-self.SL)/self.entry )*100
@@ -230,9 +230,9 @@ class Trade():
         if self.result is not None:
             self.running = False
             self.stopped = row.time
-            if self.direction == 1:
+            if self.direction == 1.0:
                 self.exit = row.bid_c
-            elif self.direction == -1:
+            elif self.direction == -1.0:
                 self.exit = row.ask_c
 
 
@@ -316,7 +316,7 @@ def backtesting(row):
     '''
 #----------------------------------------------------------------
 print(df_wt)
-conv = df_wt.to_numpy(na_value = -987654321)
+conv = df_wt.to_numpy(na_value = -98765.0)
 print(conv)
 
 print(type(conv))
